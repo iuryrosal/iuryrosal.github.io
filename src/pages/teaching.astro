@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const courses = [
+  {
+    name: 'Introduction to Data Engineering',
+    institution: 'Your Institution',
+    semester: '2024/1',
+    level: 'Undergraduate',
+  },
+  {
+    name: 'Machine Learning Fundamentals',
+    institution: 'Your Institution',
+    semester: '2023/2',
+    level: 'Graduate',
+  },
+  {
+    name: 'Databases and SQL',
+    institution: 'Your Institution',
+    semester: '2023/1',
+    level: 'Undergraduate',
+  },
+];
+
+const levelColors: Record<string, string> = {
+  Undergraduate: 'text-blue-400 bg-blue-400/10',
+  Graduate: 'text-emerald-400 bg-emerald-400/10',
+  Workshop: 'text-amber-400 bg-amber-400/10',
+};
+---
+
+<Layout title="Teaching" description="Courses taught by Iury Rosal.">
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <p class="section-subheading">Education</p>
+    <h1 class="text-3xl font-bold text-slate-100 mb-10">Teaching</h1>
+
+    <div class="flex flex-col gap-4">
+      {courses.map(course => (
+        <div class="card flex flex-col sm:flex-row sm:items-center gap-4">
+          <div class="flex-1">
+            <h2 class="text-slate-100 font-semibold">{course.name}</h2>
+            <p class="text-slate-400 text-sm mt-0.5">{course.institution}</p>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class={`text-xs font-medium px-2 py-0.5 rounded ${levelColors[course.level] ?? 'text-slate-400 bg-slate-400/10'}`}>
+              {course.level}
+            </span>
+            <span class="text-slate-500 text-sm">{course.semester}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>

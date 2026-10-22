@@ -1,0 +1,64 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('publications');
+const sorted = all.sort((a, b) => b.data.year - a.data.year);
+
+const years = [...new Set(sorted.map(p => p.data.year))].sort((a, b) => b - a);
+
+const typeColors: Record<string, string> = {
+  journal: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+  conference: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+  workshop: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+  preprint: 'text-slate-400 bg-slate-400/10 border-slate-400/20',
+};
+---
+
+<Layout title="Publications" description="Research publications by Iury Rosal.">
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <p class="section-subheading">Research</p>
+    <h1 class="text-3xl font-bold text-slate-100 mb-10">Publications</h1>
+
+    {years.map(year => (
+      <div class="mb-10">
+        <h2 class="text-lg font-semibold text-slate-500 mb-4 border-b border-slate-800 pb-2">{year}</h2>
+        <div class="flex flex-col gap-4">
+          {sorted
+            .filter(p => p.data.year === year)
+            .map(pub => (
+              <div class="card flex flex-col sm:flex-row sm:items-start gap-4">
+                <span class={`text-xs font-semibold px-2 py-0.5 rounded border shrink-0 mt-0.5 ${typeColors[pub.data.type]}`}>
+                  {pub.data.type}
+                </span>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-slate-100 font-medium leading-snug mb-1">
+                    {pub.data.url
+                      ? <a href={pub.data.url} target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">{pub.data.title}</a>
+                      : pub.data.title}
+                  </h3>
+                  <p class="text-slate-400 text-sm">{pub.data.authors.join(', ')}</p>
+                  <p class="text-slate-500 text-sm mt-0.5">{pub.data.venue}</p>
+                  {pub.data.abstract && (
+                    <p class="text-slate-500 text-sm mt-2 leading-relaxed line-clamp-3">{pub.data.abstract}</p>
+                  )}
+                </div>
+                <div class="flex flex-col gap-2 shrink-0 items-end">
+                  {pub.data.pdf && (
+                    <a href={pub.data.pdf} target="_blank" rel="noopener noreferrer" class="link-accent text-xs whitespace-nowrap">PDF ↗</a>
+                  )}
+                  {pub.data.url && (
+                    <a href={pub.data.url} target="_blank" rel="noopener noreferrer" class="link-accent text-xs whitespace-nowrap">Link ↗</a>
+                  )}
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+    ))}
+
+    {all.length === 0 && (
+      <p class="text-slate-500">No publications yet. Check back soon.</p>
+    )}
+  </div>
+</Layout>

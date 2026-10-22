@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('projects');
+const sorted = all.sort((a, b) => b.data.year - a.data.year);
+---
+
+<Layout title="Projects" description="Software projects and open-source work by Iury Rosal.">
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <div class="flex items-start justify-between mb-10">
+      <div>
+        <p class="section-subheading">Selected Work</p>
+        <h1 class="text-3xl font-bold text-slate-100">Projects</h1>
+      </div>
+      <a
+        href="https://github.com/iuryrosal"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm link-accent mt-1"
+      >
+        GitHub profile ↗
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5">
+      {sorted.map(project => (
+        <div class="card flex flex-col gap-3">
+          <div class="flex items-start justify-between gap-2">
+            <h2 class="text-slate-100 font-semibold leading-snug">{project.data.title}</h2>
+            <span class="text-slate-500 text-xs shrink-0 mt-0.5">{project.data.year}</span>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed flex-1">{project.data.description}</p>
+          <div class="flex flex-wrap gap-1.5">
+            {project.data.tech.map(t => <span class="tag">{t}</span>)}
+          </div>
+          <div class="flex gap-4 pt-1">
+            {project.data.github && (
+              <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="link-accent text-xs">GitHub ↗</a>
+            )}
+            {project.data.demo && (
+              <a href={project.data.demo} target="_blank" rel="noopener noreferrer" class="link-accent text-xs">Live demo ↗</a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {all.length === 0 && (
+      <p class="text-slate-500">No projects listed yet.</p>
+    )}
+  </div>
+</Layout>

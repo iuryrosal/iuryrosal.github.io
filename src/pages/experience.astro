@@ -1,0 +1,97 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const experience = [
+  {
+    role: 'Software Engineer',
+    company: 'Your Company',
+    period: '2023 – Present',
+    description: 'Brief description of your responsibilities and achievements.',
+    tech: ['Python', 'SQL', 'Apache Spark'],
+  },
+  {
+    role: 'Data Engineer',
+    company: 'Previous Company',
+    period: '2021 – 2023',
+    description: 'Brief description of your responsibilities and achievements.',
+    tech: ['Python', 'Airflow', 'dbt', 'BigQuery'],
+  },
+];
+
+const education = [
+  {
+    degree: "Master's in Computer Science",
+    institution: 'Your University',
+    period: '2020 – 2022',
+    description: 'Research focus and thesis title.',
+  },
+  {
+    degree: "Bachelor's in Computer Science",
+    institution: 'Your University',
+    period: '2016 – 2020',
+  },
+];
+---
+
+<Layout title="Experience" description="Professional experience and CV of Iury Rosal.">
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <div class="flex items-start justify-between mb-10">
+      <div>
+        <p class="section-subheading">Career</p>
+        <h1 class="text-3xl font-bold text-slate-100">Experience</h1>
+      </div>
+      <a
+        href="/cv.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 text-sm px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-400/20 hover:bg-blue-500/20 transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download CV
+      </a>
+    </div>
+
+    <!-- Work Experience -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold text-slate-100 mb-6">Work Experience</h2>
+      <div class="flex flex-col gap-5">
+        {experience.map(job => (
+          <div class="card flex flex-col sm:flex-row gap-4">
+            <div class="sm:w-40 shrink-0">
+              <p class="text-slate-500 text-sm">{job.period}</p>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-slate-100 font-semibold">{job.role}</h3>
+              <p class="text-blue-400 text-sm mb-2">{job.company}</p>
+              <p class="text-slate-400 text-sm leading-relaxed mb-3">{job.description}</p>
+              <div class="flex flex-wrap gap-1.5">
+                {job.tech.map(t => <span class="tag">{t}</span>)}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h2 class="text-xl font-semibold text-slate-100 mb-6">Education</h2>
+      <div class="flex flex-col gap-5">
+        {education.map(edu => (
+          <div class="card flex flex-col sm:flex-row gap-4">
+            <div class="sm:w-40 shrink-0">
+              <p class="text-slate-500 text-sm">{edu.period}</p>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-slate-100 font-semibold">{edu.degree}</h3>
+              <p class="text-blue-400 text-sm mb-2">{edu.institution}</p>
+              {edu.description && <p class="text-slate-400 text-sm leading-relaxed">{edu.description}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
